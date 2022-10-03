@@ -86,10 +86,3 @@ namespace esphome
 
     } // namespace obis_d0
 } // namespace esphome
-
-#if 0
-            cv.Optional(CONF_EXPORT_REACTIVE_ENERGY): sensor.sensor_schema(
-                unit_of_measurement=UNIT_KILOVOLT_AMPS_REACTIVE_HOURS,
-                accuracy_decimals=2,
-                state_class=STATE_CLASS_TOTAL_INCREASING,
-#endif
