@@ -16,10 +16,7 @@ This device has 2 D0 interfaces:
 
 ```yaml
 external_components:
-  #  - source: github://mampfes/esphome_obis_d0
-  - source:
-      type: local
-      path: /home/steffenz/projects/esphome_obis_d0/components
+  - source: github://mampfes/esphome_obis_d0
 
 uart:
   id: my_uart
