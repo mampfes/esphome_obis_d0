@@ -46,7 +46,7 @@ text_sensor:
 
 ## Configuration Variables
 
-### SM D0 platform
+### OBIS D0 platform
 
 - **id** (Optional, [ID](https://esphome.io/guides/configuration-types.html#config-id)): Manually specify the ID used for code generation.
 - **uart_id** (Optional, [ID](https://esphome.io/guides/configuration-types.html#config-id)): ID of the [UART Component](https://esphome.io/components/uart.html#uart) if you want to use multiple UART buses.
@@ -54,9 +54,10 @@ text_sensor:
 ### Sensor
 
 - **obis_code** (Required, string): Specify the OBIS code you want to retrieve data for from the device.
-- **obis_d0_id** (Optional, [ID](https://esphome.io/guides/configuration-types.html#config-id)): ID of the SM D0 Component if you wnat to use multiple smart meters.
+- **obis_d0_id** (Optional, [ID](https://esphome.io/guides/configuration-types.html#config-id)): ID of the *OBIS D0* Component if you want to manage multiple smart meters.
 - **value_regex** (Optional, string): Regular expression to check the validity of the OBIS value. If received value does't match the regular expression, it will be discarded.
-- **format** (Optional, string): Format of the OBIS value. Possible choices: `float`, `hex`. Default value: `float`
+- **format** (Optional, string): Format of the OBIS value. Possible choices: `float`, `hex`. Defaults to `float`.
+- **timeout** (Optional, [Time](https://esphome.io/guides/configuration-types.html#config-time)): Timeout after which value will be invalidated. Defaults to `5s`.
 - All other options form [Sensor](https://esphome.io/components/sensor/index.html#config-sensor).
 
 ### Text Sensor
