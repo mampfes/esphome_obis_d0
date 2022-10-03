@@ -20,6 +20,23 @@ namespace esphome
             return ok;
         }
 
+        void SmartMeterD0SensorBase::reset_timeout_counter()
+        {
+            lastUpdate_ = millis();
+        }
+
+        bool SmartMeterD0SensorBase::has_timed_out()
+        {
+            auto now = millis();
+            if (lastUpdate_ != 0 && now - lastUpdate_ > timeout_)
+            {
+                lastUpdate_ = 0; // invalidate last update time in case of a timeout
+                return true;
+            }
+
+            return false;
+        }
+
         SmartMeterD0::SmartMeterD0()
         {
             reset();
@@ -40,6 +57,15 @@ namespace esphome
             while (available() > 0)
             {
                 (this->*search_)();
+            }
+
+            // check timeout
+            for (auto& it : sensors_)
+            {
+                if (it.second->has_timed_out())
+                {
+                    it.second->publish_invalid();
+                }
             }
         }
 

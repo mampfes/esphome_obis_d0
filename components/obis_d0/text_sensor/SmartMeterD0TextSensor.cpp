@@ -12,8 +12,8 @@ namespace esphome
     {
         static const char* const TAG = "obis_d0_text_sensor";
 
-        SmartMeterD0TextSensor::SmartMeterD0TextSensor(std::string obis_code, std::string value_regex) :
-            SmartMeterD0SensorBase{obis_code, value_regex}
+        SmartMeterD0TextSensor::SmartMeterD0TextSensor(std::string obis_code, std::string value_regex, int timeout_ms) :
+            SmartMeterD0SensorBase{obis_code, value_regex, timeout_ms}
         {
         }
 
@@ -22,11 +22,17 @@ namespace esphome
             if (check_value(value))
             {
                 publish_state(value);
+                reset_timeout_counter();
             }
             else
             {
-                publish_state("");
+                publish_invalid();
             }
+        }
+
+        void SmartMeterD0TextSensor::publish_invalid()
+        {
+            publish_state("");
         }
     } // namespace obis_d0
 } // namespace esphome

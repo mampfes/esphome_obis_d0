@@ -13,8 +13,9 @@ namespace esphome
         class SmartMeterD0Sensor : public SmartMeterD0SensorBase, public sensor::Sensor, public Component
         {
         public:
-            SmartMeterD0Sensor(std::string obis_code, std::string value_regex, ValueFormat format);
+            SmartMeterD0Sensor(std::string obis_code, std::string value_regex, ValueFormat format, int timeoutMS);
             void publish_val(const std::string& value) override;
+            void publish_invalid() override;
 
         protected:
             void publish_float(const std::string& value);

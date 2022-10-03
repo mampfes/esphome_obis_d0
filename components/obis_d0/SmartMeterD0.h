@@ -26,15 +26,18 @@ namespace esphome
             virtual ~ISmartMeterD0Sensor() = default;
 
             virtual void publish_val(const std::string& value) = 0;
+            virtual void publish_invalid() = 0;
+            virtual bool has_timed_out() = 0;
             virtual const std::string& get_obis_code() const = 0;
         };
 
         class SmartMeterD0SensorBase : public ISmartMeterD0Sensor
         {
         public:
-            SmartMeterD0SensorBase(std::string obis_code, std::string value_regex) :
+            SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms) :
                 obis_code_{std::move(obis_code)},
-                value_regex_{value_regex}
+                value_regex_{value_regex},
+                timeout_{static_cast<uint32_t>(timeout_ms)}
             {
             }
 
@@ -45,8 +48,13 @@ namespace esphome
 
             bool check_value(const std::string& value);
 
+            void reset_timeout_counter();
+            bool has_timed_out() override;
+
         private:
             std::regex value_regex_;
+            uint32_t lastUpdate_{0}; // in milliseconds
+            const uint32_t timeout_; // in milliseconds
         };
 
         class SmartMeterD0 : public Component,

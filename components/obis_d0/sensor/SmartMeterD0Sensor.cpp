@@ -13,8 +13,8 @@ namespace esphome
     {
         static const char* const TAG = "obis_d0_sensor";
 
-        SmartMeterD0Sensor::SmartMeterD0Sensor(std::string obis_code, std::string value_regex, ValueFormat format) :
-            SmartMeterD0SensorBase{obis_code, value_regex}
+        SmartMeterD0Sensor::SmartMeterD0Sensor(std::string obis_code, std::string value_regex, ValueFormat format, int timeout_ms) :
+            SmartMeterD0SensorBase{obis_code, value_regex, timeout_ms}
         {
             switch (format)
             {
@@ -33,11 +33,17 @@ namespace esphome
             if (check_value(value))
             {
                 (this->*publish_)(value);
+                reset_timeout_counter();
             }
             else
             {
-                publish_state(NAN);
+                publish_invalid();
             }
+        }
+
+        void SmartMeterD0Sensor::publish_invalid()
+        {
+            publish_state(NAN);
         }
 
         void SmartMeterD0Sensor::publish_float(const std::string& value)
