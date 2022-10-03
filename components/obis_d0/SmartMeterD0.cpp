@@ -49,7 +49,7 @@ namespace esphome
 
         void SmartMeterD0::reset()
         {
-            search_ = &SmartMeterD0::searchStartOfTelegram;
+            search_ = &SmartMeterD0::search_start_of_telegram;
         }
 
         void SmartMeterD0::loop()
@@ -69,7 +69,7 @@ namespace esphome
             }
         }
 
-        void SmartMeterD0::searchStartOfTelegram()
+        void SmartMeterD0::search_start_of_telegram()
         {
             uint8_t* dest = &buffer_[length_++];
             (void)read_byte(dest);
@@ -78,12 +78,12 @@ namespace esphome
             if (*dest == '/')
             {
                 // start of telegram detected
-                search_ = &SmartMeterD0::searchEndOfRecord;
+                search_ = &SmartMeterD0::search_end_of_record;
                 length_ = 1;
             }
         }
 
-        void SmartMeterD0::searchEndOfRecord()
+        void SmartMeterD0::search_end_of_record()
         {
             uint8_t* dest = &buffer_[length_++];
             (void)read_byte(dest);
@@ -91,7 +91,7 @@ namespace esphome
             // check if this the end of a record
             if (*dest == '\n')
             {
-                parseRecord();
+                parse_record();
                 length_ = 0;
             }
 
@@ -103,7 +103,7 @@ namespace esphome
             }
         }
 
-        void SmartMeterD0::parseRecord()
+        void SmartMeterD0::parse_record()
         {
             if (length_ < 2)
             {
@@ -128,7 +128,7 @@ namespace esphome
             switch (buffer_[0])
             {
                 case '/':
-                    parseIdentification();
+                    parse_identification();
                     break;
 
                 case '!':
@@ -136,19 +136,19 @@ namespace esphome
                     break;
 
                 default:
-                    parseObis();
+                    parse_obis();
                     break;
             }
         }
 
-        void SmartMeterD0::parseIdentification()
+        void SmartMeterD0::parse_identification()
         {
             std::string ident(reinterpret_cast<const char*>(&buffer_[1]), reinterpret_cast<const char*>(&buffer_[length_ - 2]));
 
             ESP_LOGD(TAG, "Identification: %s ", ident.c_str());
         }
 
-        void SmartMeterD0::parseObis()
+        void SmartMeterD0::parse_obis()
         {
             // example: "1-0:0.0.0*255(1023090014472256)\r\n"
             //          |    code     |     value      |

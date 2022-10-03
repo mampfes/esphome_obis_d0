@@ -75,12 +75,12 @@ namespace esphome
         protected:
             void reset();
 
-            void searchStartOfTelegram();
-            void searchEndOfRecord();
+            void search_start_of_telegram();
+            void search_end_of_record();
 
-            void parseRecord();
-            void parseIdentification();
-            void parseObis();
+            void parse_record();
+            void parse_identification();
+            void parse_obis();
 
         private:
             std::array<uint8_t, 150> buffer_;
