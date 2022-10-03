@@ -9,9 +9,9 @@
 
 namespace esphome
 {
-    namespace sm_d0
+    namespace obis_d0
     {
-        static const char* const TAG = "sm_d0_sensor";
+        static const char* const TAG = "obis_d0_sensor";
 
         SmartMeterD0Sensor::SmartMeterD0Sensor(std::string obis_code, std::string value_regex, ValueFormat format) :
             SmartMeterD0SensorBase{obis_code, value_regex}
@@ -77,5 +77,5 @@ namespace esphome
 
             publish_state(val);
         }
-    } // namespace sm_d0
+    } // namespace obis_d0
 } // namespace esphome

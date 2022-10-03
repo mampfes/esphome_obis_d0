@@ -1,0 +1,41 @@
+# Don't align consecutive assignments or declarations.
+# Example:
+# int aaaa = 12;
+# int b = 13;
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+
+# Use space for indentation instead of tab.
+UseTab: Never
+
+# Indentation handling.
+IndentWidth: 4
+AccessModifierOffset: -4
+IndentCaseLabels: true
+NamespaceIndentation: All
+# Set to 0 to ensure that constructor initializers are always set to new line.
+ColumnLimit: 0
+
+# empty line handling
+MaxEmptyLinesToKeep: 1
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+# Brace Wrapping
+BreakBeforeBraces: Allman
+
+# Pointer and reference alignment style.
+PointerAlignment: Left
+
+# Spacing
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+
+# Alignment
+AlignAfterOpenBracket: AlwaysBreak
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+
+# Short statement handling
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: false

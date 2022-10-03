@@ -4,9 +4,9 @@
 
 namespace esphome
 {
-    namespace sm_d0
+    namespace obis_d0
     {
-        static const char* const TAG = "sm_d0";
+        static const char* const TAG = "obis_d0";
 
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
         {
@@ -166,5 +166,5 @@ namespace esphome
             }
         }
 
-    } // namespace sm_d0
+    } // namespace obis_d0
 } // namespace esphome

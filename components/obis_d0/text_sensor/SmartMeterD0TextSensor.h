@@ -8,7 +8,7 @@
 
 namespace esphome
 {
-    namespace sm_d0
+    namespace obis_d0
     {
         class SmartMeterD0TextSensor : public SmartMeterD0SensorBase, public text_sensor::TextSensor, public Component
         {
@@ -19,5 +19,5 @@ namespace esphome
         private:
         };
 
-    } // namespace sm_d0
+    } // namespace obis_d0
 } // namespace esphome

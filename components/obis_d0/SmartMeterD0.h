@@ -11,7 +11,7 @@
 
 namespace esphome
 {
-    namespace sm_d0
+    namespace obis_d0
     {
         // input string formats for float/int sensors
         enum ValueFormat : uint8_t
@@ -84,7 +84,7 @@ namespace esphome
             std::map<std::string, ISmartMeterD0Sensor*> sensors_;
         };
 
-    } // namespace sm_d0
+    } // namespace obis_d0
 } // namespace esphome
 
 #if 0

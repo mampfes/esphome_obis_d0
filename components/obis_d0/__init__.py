@@ -9,11 +9,11 @@ CODEOWNERS = ["@mampfes"]
 
 DEPENDENCIES = ["uart"]
 
-sm_d0_ns = cg.esphome_ns.namespace("sm_d0")
-SmartMeterD0 = sm_d0_ns.class_("SmartMeterD0", cg.Component, uart.UARTDevice)
+obis_d0_ns = cg.esphome_ns.namespace("obis_d0")
+SmartMeterD0 = obis_d0_ns.class_("SmartMeterD0", cg.Component, uart.UARTDevice)
 MULTI_CONF = True
 
-CONF_SM_D0_ID = "sm_d0_id"
+CONF_OBIS_D0_ID = "obis_d0_id"
 CONF_OBIS_CODE = "obis_code"
 CONF_VALUE_REGEX = "value_regex"
 
