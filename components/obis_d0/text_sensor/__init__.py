@@ -5,7 +5,7 @@ from esphome.const import CONF_ID, CONF_TIMEOUT
 
 from .. import CONF_OBIS_D0_ID, CONF_OBIS_CODE, CONF_VALUE_REGEX, SmartMeterD0, obis_code, obis_d0_ns
 
-AUTO_LOAD = ["sml"]
+AUTO_LOAD = ["obis_d0"]
 
 SmartMeterD0TextSensor = obis_d0_ns.class_(
     "SmartMeterD0TextSensor", text_sensor.TextSensor, cg.Component)
