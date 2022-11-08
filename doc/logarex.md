@@ -189,7 +189,7 @@ sensor:
     accuracy_decimals: 1
     state_class: measurement
     device_class: frequency
-    value_regex: "\\d{2}\\.\\d{1}\\*deg"
+    value_regex: "\\d{2}\\.\\d{1}\\*Hz"
 
   - platform: obis_d0
     name: "Consumed Power last 1d"
@@ -261,7 +261,7 @@ text_sensor:
     obis_d0_id: my_sm
     obis_code: "1-0:0.2.0*255"
     entity_category: diagnostic
-    value_regex: "\\w{20}"
+    value_regex: "[0-9a-fA-F.,]{20}"
 
   - platform: obis_d0
     name: "Device Identification"
