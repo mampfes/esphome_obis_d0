@@ -23,6 +23,9 @@ uart:
 obis_d0:
   id: my_sm
   uart_id: my_uart
+  on_telegram:
+    then:
+      - logger.log: "telegram received"
 
 sensor:
   - platform: obis_d0
@@ -42,6 +45,13 @@ text_sensor:
     obis_code: "1-0:96.1.0*255"
     entity_category: diagnostic
     value_regex: "\\w{14}"
+
+  - platform: obis_d0
+    name: "Manufacturer ID"
+    obis_d0_id: my_sm
+    obis_code: "id"
+    entity_category: diagnostic
+    value_regex: "\\w+"
 ```
 
 ## Configuration Variables
@@ -64,6 +74,13 @@ text_sensor:
 
 - **obis_code** (Required, string): Specify the OBIS code you want to retrieve data for from the device.
 - All other options from [Text Sensor](https://esphome.io/components/text_sensor/index.html#config-text-sensor).
+
+**NOTE**: There is one special OBIS code for text sensors:  
+`id` returns the manufacturer identification at the beginning of an OBIS telegram (see example above).
+
+### Automations
+
+- **on_telegram** (Optional, [Automation](https://esphome.io/guides/automations.html#automation)): An automation to perform after a complete telegram (consisting of manufacturer identification and OBIS records) has been received.
 
 ---
 

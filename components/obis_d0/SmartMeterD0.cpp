@@ -132,7 +132,7 @@ namespace esphome
                     break;
 
                 case '!':
-                    reset();
+                    end_of_telegram();
                     break;
 
                 default:
@@ -146,6 +146,13 @@ namespace esphome
             std::string ident(reinterpret_cast<const char*>(&buffer_[1]), reinterpret_cast<const char*>(&buffer_[length_ - 2]));
 
             ESP_LOGD(TAG, "Identification: %s ", ident.c_str());
+
+            // search sensor
+            auto it = sensors_.find("id");
+            if (it != sensors_.end())
+            {
+                it->second->publish_val(ident);
+            }
         }
 
         void SmartMeterD0::parse_obis()
@@ -190,6 +197,16 @@ namespace esphome
             {
                 it->second->publish_val(value);
             }
+        }
+
+        void SmartMeterD0::end_of_telegram()
+        {
+            for (auto* trigger : telegramTriggers_)
+            {
+                trigger->trigger();
+            }
+
+            reset();
         }
 
     } // namespace obis_d0

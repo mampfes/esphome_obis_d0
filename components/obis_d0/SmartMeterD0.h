@@ -7,6 +7,7 @@
 #include <string>
 
 #include "esphome/components/uart/uart.h"
+#include "esphome/core/automation.h"
 #include "esphome/core/component.h"
 
 namespace esphome
@@ -57,6 +58,10 @@ namespace esphome
             const uint32_t timeout_; // in milliseconds
         };
 
+        class TelegramTrigger : public Trigger<>
+        {
+        };
+
         class SmartMeterD0 : public Component,
                              public uart::UARTDevice
         {
@@ -72,6 +77,8 @@ namespace esphome
 
             void register_sensor(ISmartMeterD0Sensor* sensor);
 
+            void register_telegram_trigger(TelegramTrigger* trigger) { telegramTriggers_.push_back(trigger); }
+
         protected:
             void reset();
 
@@ -82,6 +89,8 @@ namespace esphome
             void parse_identification();
             void parse_obis();
 
+            void end_of_telegram();
+
         private:
             std::array<uint8_t, 150> buffer_;
             uint16_t length_{0}; // used bytes in buffer_
@@ -90,6 +99,7 @@ namespace esphome
             SearchFct search_{nullptr};
 
             std::map<std::string, ISmartMeterD0Sensor*> sensors_;
+            std::vector<TelegramTrigger*> telegramTriggers_;
         };
 
     } // namespace obis_d0
