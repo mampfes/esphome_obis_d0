@@ -1,8 +1,8 @@
 # ISKRA MT174
 
-UART configuration: 300 Baud, 7E1
+![ISKRA MT174](iskra_mt174.png)
 
-This device has an optical D0 interface at the front. To enable the output of  complete data records (full resolution and all available values), the ```INF``` parameter has to be set to ```on```.
+UART configuration: 300 Baud, 7E1
 
 ## Example
 
@@ -13,6 +13,7 @@ external_components:
 uart:
   id: my_uart
   rx_pin: GPIO16
+  tx_pin: GPIO17
   baud_rate: 300
   data_bits: 7
   parity: EVEN
@@ -21,6 +22,17 @@ uart:
 obis_d0:
   id: my_sm
   uart_id: my_uart
+
+## ---------------------------------------------------
+# The device needs to be triggered to send out data. 
+# We can use the integrated "interval" component for that:
+## ---------------------------------------------------
+interval:
+  - interval: 60sec
+    then:
+      - uart.write:
+          id: my_uart
+          data: [0x2F, 0x3F, 0x21, 0x0D, 0x0A]
 
 sensor:
   - !include common/sensor/wifi.yaml
