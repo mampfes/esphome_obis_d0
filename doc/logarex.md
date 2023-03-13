@@ -2,7 +2,7 @@
 
 UART configuration: 9600 Baud, 7E1
 
-This device has an optical D0 interface at the front. To enable the output of  complete data records (full resolution and all available values), the ```INF``` parameter has to be set to ```on```.
+This device has an optical D0 interface at the front. To enable the output of complete data records (full resolution and all available values), the ```INF``` parameter has to be set to ```on```.
 
 ## Example
 
