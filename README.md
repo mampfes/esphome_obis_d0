@@ -105,6 +105,7 @@ This section lists supported smart meters:
 | Device | Status |
 |-|-|
 | [eBZ DD3 Drehstromzähler](doc/ebz_dd3.md) | Supported |
+| [ISKRA MT174](doc/iskra_mt174.md) | Supported |
 | [Logarex LK11 / LK13](doc/logarex.md) | Supported |
 
 ## Important Notes
