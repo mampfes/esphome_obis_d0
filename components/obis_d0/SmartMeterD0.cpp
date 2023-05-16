@@ -8,6 +8,10 @@ namespace esphome
     {
         static const char* const TAG = "obis_d0";
 
+        // STX and ETX are sent by an Iskraemeco MT174 after requesting a telegram.
+        static constexpr uint8_t STX = 0x02;
+        static constexpr uint8_t ETX = 0x02;
+
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
         {
             bool ok = std::regex_match(value, value_regex_);
@@ -93,6 +97,11 @@ namespace esphome
             {
                 parse_record();
                 length_ = 0;
+            }
+            else if (*dest == STX || *dest == ETX)
+            {
+                // ignore character
+                length_--;
             }
 
             if (length_ == buffer_.size())
