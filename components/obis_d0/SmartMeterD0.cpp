@@ -2,6 +2,8 @@
 
 #include "SmartMeterD0.h"
 
+#include "re.h"
+
 namespace esphome
 {
     namespace obis_d0
@@ -12,16 +14,25 @@ namespace esphome
         static constexpr uint8_t STX = 0x02;
         static constexpr uint8_t ETX = 0x02;
 
+        SmartMeterD0SensorBase::SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms) :
+             obis_code_{std::move(obis_code)},
+             value_regex_{std::move(value_regex)},
+             timeout_{static_cast<uint32_t>(timeout_ms)}
+        {}
+
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
         {
-            bool ok = std::regex_match(value, value_regex_);
+            int matchlen = 0;
+            int targetlen = value.length();
+            bool begin = re_match(value_regex_.c_str(), value.c_str(), &matchlen);
 
-            if (!ok)
+            if (begin != 0 || matchlen != targetlen)
             {
-                ESP_LOGW(TAG, "value regex doesn't match: %s -> %s", obis_code_.c_str(), value.c_str());
+                ESP_LOGW(TAG, "regex '%s' does not match entire value ('%s' -> '%s') matched %d to %d of length %d", value_regex_.c_str(), obis_code_.c_str(), value.c_str(), begin, matchlen, targetlen);
+                return false;
             }
 
-            return ok;
+            return true;
         }
 
         void SmartMeterD0SensorBase::reset_timeout_counter()

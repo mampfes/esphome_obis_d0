@@ -65,7 +65,7 @@ text_sensor:
 
 - **obis_code** (Required, string): Specify the OBIS code you want to retrieve data for from the device.
 - **obis_d0_id** (Optional, [ID](https://esphome.io/guides/configuration-types.html#config-id)): ID of the *OBIS D0* Component if you want to manage multiple smart meters.
-- **value_regex** (Optional, string): Regular expression to check the validity of the OBIS value. If received value does't match the regular expression, it will be discarded.
+- **value_regex** (Optional, string): Regular expression to check the validity of the OBIS value. If received value does't match the complete regular expression, it will be discarded. See [tiny-regex-c](https://github.com/kokke/tiny-regex-c/tree/master#notable-features-and-omissions) for limitations of the regex library.
 - **format** (Optional, string): Format of the OBIS value. Possible choices: `float`, `hex`. Defaults to `float`.
 - **timeout** (Optional, [Time](https://esphome.io/guides/configuration-types.html#config-time)): Timeout after which value will be invalidated. Defaults to `5s`.
 - All other options form [Sensor](https://esphome.io/components/sensor/index.html#config-sensor).
@@ -116,6 +116,14 @@ The OBIS D0 data format is a textual format based on ASCII characters without er
 
 If anyone knows how to get a notification from the UART layer in case of an error - please let me know!
 
-### ESP-01
+### RegEx compatibility
 
-Due to the size of the code, this component doesn't fit into an ESP-01 / ESP-01s.
+The [tiny-regex-c library](https://github.com/kokke/tiny-regex-c/tree/master) is used to reduce the size of the resulting executable. This comes with some caveats regarding the regex capabilities. Please referer to the linked library for details.
+
+### Unsupported RegEx Features
+- `()` any grouping mechanisms are not supported
+- `{6,7}` fixed repetitions are not supported, you will have to expand them manually \
+  `\d{7}` becomes: `\d\d\d\d\d\d\d` \
+  `\d{1,3}` becomes: `\d\d?\d?`
+- Additionally the regex must match the entire value, partial matches are detected as an error. \
+  as if they are surrounded with `^` adn `$`

@@ -3,8 +3,8 @@
 #include <array>
 #include <cstdint>
 #include <map>
-#include <regex>
 #include <string>
+
 
 #include "esphome/components/uart/uart.h"
 #include "esphome/core/automation.h"
@@ -35,12 +35,7 @@ namespace esphome
         class SmartMeterD0SensorBase : public ISmartMeterD0Sensor
         {
         public:
-            SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms) :
-                obis_code_{std::move(obis_code)},
-                value_regex_{value_regex},
-                timeout_{static_cast<uint32_t>(timeout_ms)}
-            {
-            }
+            SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms);
 
             const std::string& get_obis_code() const override { return obis_code_; }
 
@@ -53,7 +48,7 @@ namespace esphome
             bool has_timed_out() override;
 
         private:
-            std::regex value_regex_;
+            std::string value_regex_;
             uint32_t lastUpdate_{0}; // in milliseconds
             const uint32_t timeout_; // in milliseconds
         };
