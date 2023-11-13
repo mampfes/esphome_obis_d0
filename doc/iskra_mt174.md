@@ -47,7 +47,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "(\\d{7}\\.\\d{3}\\*kWh)"
 
   # 1.8.1(0011404.409*kWh) Positive active energy (A+) in tariff HT [kWh]
   - platform: obis_d0
@@ -58,7 +58,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "(\\d{7}\\.\\d{3}\\*kWh)"
 
   # 1.8.2(0023813.725*kWh) Positive active energy (A+) in tariff NT [kWh]
   - platform: obis_d0
@@ -69,7 +69,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "\\d{7}\\.\\d{3}\\*kWh"
 
   # 2.8.0(0015608.962*kWh) Negative active energy (A-) total [kWh]
   - platform: obis_d0
@@ -80,7 +80,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "\\d{7}\\.\\d{3}\\*kWh"
 
   # 2.8.1(0015608.962*kWh) Negative active energy (A-) in tariff T1 [kWh]
   - platform: obis_d0
@@ -91,7 +91,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "\\d{7}\\.\\d{3}\\*kWh"
 
   # 2.8.2(0000900.569*kWh)  Negative active energy (A-) in tariff T2 [kWh]
   - platform: obis_d0
@@ -102,7 +102,7 @@ sensor:
     accuracy_decimals: 3
     device_class: energy
     state_class: total_increasing
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+    value_regex: "\\d{7}\\.\\d{3}\\*kWh"
 
 text_sensor:
   # 0.9.2(0230223) Date (1YY.MM.DD)
@@ -111,7 +111,7 @@ text_sensor:
     internal: true
     obis_d0_id: my_sm
     obis_code: "0.9.2"
-    value_regex: "\\d\\d\\d\\d\\d\\d\\d"
+    value_regex: "\\d{7}"
     filters:
       - prepend: "2"
     on_value:
@@ -127,7 +127,7 @@ text_sensor:
     internal: true
     obis_d0_id: my_sm
     obis_code: "0.9.1"
-    value_regex: "\\d\\d\\d\\d\\d\\d"
+    value_regex: "\\d{6}"
     on_value:
       then:
         - lambda: |-

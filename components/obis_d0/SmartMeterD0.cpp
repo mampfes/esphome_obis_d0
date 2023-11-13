@@ -2,7 +2,11 @@
 
 #include "SmartMeterD0.h"
 
-#include "re.h"
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+    #include "re.h"
+#else
+    #include <regex>
+#endif
 
 namespace esphome
 {
@@ -14,26 +18,52 @@ namespace esphome
         static constexpr uint8_t STX = 0x02;
         static constexpr uint8_t ETX = 0x02;
 
-        SmartMeterD0SensorBase::SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms) :
-             obis_code_{std::move(obis_code)},
-             value_regex_{std::move(value_regex)},
-             timeout_{static_cast<uint32_t>(timeout_ms)}
-        {}
-
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
         {
             int matchlen = 0;
             int targetlen = value.length();
-            bool begin = re_match(value_regex_.c_str(), value.c_str(), &matchlen);
+            int begin = re_match(value_regex_.c_str(), value.c_str(), &matchlen);
+
+            const char* parse_error = re_last_error();
+            if (parse_error != 0)
+            {
+                ESP_LOGE(TAG,
+                         "%s: regex '%s' failed to parse: %s",
+                         obis_code_.c_str(),
+                         value_regex_.c_str(),
+                         parse_error);
+                return false;
+            }
 
             if (begin != 0 || matchlen != targetlen)
             {
-                ESP_LOGW(TAG, "regex '%s' does not match entire value ('%s' -> '%s') matched %d to %d of length %d", value_regex_.c_str(), obis_code_.c_str(), value.c_str(), begin, matchlen, targetlen);
+                ESP_LOGW(TAG,
+                         "regex '%s' does not match entire value ('%s' -> '%s') matched %d to %d of length %d: %s",
+                         value_regex_.c_str(),
+                         obis_code_.c_str(),
+                         value.c_str(),
+                         begin,
+                         matchlen,
+                         targetlen);
                 return false;
             }
 
             return true;
         }
+#else
+        bool SmartMeterD0SensorBase::check_value(const std::string& value)
+        {
+            bool ok = std::regex_match(value, value_regex_);
+
+            if (!ok)
+            {
+                ESP_LOGW(TAG, "value regex doesn't match: %s -> %s", obis_code_.c_str(), value.c_str());
+            }
+
+            return ok;
+        }
+#endif
 
         void SmartMeterD0SensorBase::reset_timeout_counter()
         {
