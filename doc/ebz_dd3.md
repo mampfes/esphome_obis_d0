@@ -42,7 +42,7 @@ sensor:
     accuracy_decimals: 4
     state_class: total_increasing
     device_class: energy
-    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\d\\d\\d\\d\\d\\*kWh"
+    value_regex: "\\d{6}\\.\\d{8}\\*kWh"
 
   #  - platform: obis_d0
   #    name: "Consumed Energy Tariff 1"
@@ -52,7 +52,7 @@ sensor:
   #    accuracy_decimals: 4
   #    state_class: total_increasing
   #    device_class: energy
-  #    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+  #    value_regex: "\\d{6}\\.\\d{3}\\*kWh"
 
   #  - platform: obis_d0
   #    name: "Consumed Energy Tariff 2"
@@ -62,7 +62,7 @@ sensor:
   #    accuracy_decimals: 4
   #    state_class: total_increasing
   #    device_class: energy
-  #    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+  #    value_regex: "\\d{6}\\.\\d{3}\\*kWh"
 
   - platform: obis_d0
     name: "Provided Energy"
@@ -72,7 +72,7 @@ sensor:
     accuracy_decimals: 4
     state_class: total_increasing
     device_class: energy
-    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\d\\d\\d\\d\\d\\*kWh"
+    value_regex: "\\d{6}\\.\\d{8}\\*kWh"
 
   #  - platform: obis_d0
   #    name: "Provided Energy Tariff 1"
@@ -82,7 +82,7 @@ sensor:
   #    accuracy_decimals: 4
   #    state_class: total_increasing
   #    device_class: energy
-  #    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+  #    value_regex: "\\d{6}\\.\\d{3}\\*kWh"
 
   #  - platform: obis_d0
   #    name: "Provided Energy Tariff 2"
@@ -92,7 +92,7 @@ sensor:
   #    accuracy_decimals: 4
   #    state_class: total_increasing
   #    device_class: energy
-  #    value_regex: "\\d\\d\\d\\d\\d\\d\\.\\d\\d\\d\\*kWh"
+  #    value_regex: "\\d{6}\\.\\d{3}\\*kWh"
 
   - platform: obis_d0
     name: "Power"
@@ -102,7 +102,7 @@ sensor:
     accuracy_decimals: 2
     state_class: measurement
     device_class: power
-    value_regex: "-?\\d\\d\\d\\d\\d\\d\\.\\d\\d\\*W"
+    value_regex: "-?\\d{6}\\.\\d{2}\\*W"
 
   - platform: obis_d0
     name: "Power L1"
@@ -112,7 +112,7 @@ sensor:
     accuracy_decimals: 2
     state_class: measurement
     device_class: power
-    value_regex: "-?\\d\\d\\d\\d\\d\\d\\.\\d\\d\\*W"
+    value_regex: "-?\\d{6}\\.\\d{2}\\*W"
 
   - platform: obis_d0
     name: "Power L2"
@@ -122,7 +122,7 @@ sensor:
     accuracy_decimals: 2
     state_class: measurement
     device_class: power
-    value_regex: "-?\\d\\d\\d\\d\\d\\d\\.\\d\\d\\*W"
+    value_regex: "-?\\d{6}\\.\\d{2}\\*W"
 
   - platform: obis_d0
     name: "Power L3"
@@ -132,7 +132,7 @@ sensor:
     accuracy_decimals: 2
     state_class: measurement
     device_class: power
-    value_regex: "-?\\d\\d\\d\\d\\d\\d\\.\\d\\d\\*W"
+    value_regex: "-?\\d{6}\\.\\d{2}\\*W"
 
   - platform: obis_d0
     name: "Voltage L1"
@@ -142,7 +142,7 @@ sensor:
     accuracy_decimals: 1
     state_class: measurement
     device_class: voltage
-    value_regex: "\\d\\d\\d\\.\\d\\*V"
+    value_regex: "\\d{3}\\.\\d{1}\\*V"
 
   - platform: obis_d0
     name: "Voltage L2"
@@ -152,7 +152,7 @@ sensor:
     accuracy_decimals: 1
     state_class: measurement
     device_class: voltage
-    value_regex: "\\d\\d\\d\\.\\d\\*V"
+    value_regex: "\\d{3}\\.\\d{1}\\*V"
 
   - platform: obis_d0
     name: "Voltage L3"
@@ -162,13 +162,13 @@ sensor:
     accuracy_decimals: 1
     state_class: measurement
     device_class: voltage
-    value_regex: "\\d\\d\\d\\.\\d\\*V"
+    value_regex: "\\d{3}\\.\\d{1}\\*V"
 
   - platform: obis_d0
     name: "Status"
     obis_d0_id: my_sm
     obis_code: "1-0:96.5.0*255"
-    value_regex: "[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]"
+    value_regex: "[0-9a-fA-F]{8}"
     format: hex
 
   - platform: obis_d0
@@ -178,7 +178,7 @@ sensor:
     format: hex
     disabled_by_default: true
     entity_category: diagnostic
-    value_regex: "[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]"
+    value_regex: "[0-9a-fA-F]{8}"
 
 text_sensor:
   #  - platform: obis_d0
@@ -186,12 +186,12 @@ text_sensor:
   #    obis_d0_id: my_sm
   #    obis_code: "1-0:0.0.0*255"
   #    entity_category: diagnostic
-  #    value_regex: "\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w"
+  #    value_regex: "\\w{14}"
 
   - platform: obis_d0
     name: "Device Identification"
     obis_d0_id: my_sm
     obis_code: "1-0:96.1.0*255"
     entity_category: diagnostic
-    value_regex: "\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w\\w"
+    value_regex: "\\w{14}"
 ```
