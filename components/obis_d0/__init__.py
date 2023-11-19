@@ -19,6 +19,7 @@ CONF_OBIS_D0_ID = "obis_d0_id"
 CONF_OBIS_CODE = "obis_code"
 CONF_VALUE_REGEX = "value_regex"
 CONF_ON_TELEGRAM = "on_telegram"
+CONF_OPTIMIZE_SIZE = "optimize_size"
 
 # Triggers
 TelegramTrigger = obis_d0_ns.class_("TelegramTrigger", automation.Trigger.template())
@@ -30,7 +31,8 @@ CONFIG_SCHEMA = cv.Schema(
             {
                 cv.GenerateID(CONF_TRIGGER_ID): cv.declare_id(TelegramTrigger),
             }
-        )
+        ),
+        cv.Optional(CONF_OPTIMIZE_SIZE, False): cv.boolean
     }
 ).extend(uart.UART_DEVICE_SCHEMA)
 
@@ -44,6 +46,9 @@ async def to_code(config):
         trigger = cg.new_Pvariable(conf[CONF_TRIGGER_ID])
         cg.add(var.register_telegram_trigger(trigger))
         await automation.build_automation(trigger, [], conf)
+
+    if config[CONF_OPTIMIZE_SIZE]:
+        cg.add_define("COMPONENT_OBIS_D0_OPTIMIZE_SIZE", "1")
 
 def obis_code(value):
     value = cv.string(value)

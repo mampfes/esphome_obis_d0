@@ -1,6 +1,6 @@
 # eBZ DD3 Drehstromzähler
 
-![eBY DD3](ebz_dd3.png)
+![eBZ DD3](ebz_dd3.png)
 
 UART configuration: 9600 Baud, 7E1
 

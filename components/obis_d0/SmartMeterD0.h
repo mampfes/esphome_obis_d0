@@ -3,7 +3,9 @@
 #include <array>
 #include <cstdint>
 #include <map>
-#include <regex>
+#ifndef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+    #include <regex>
+#endif
 #include <string>
 
 #include "esphome/components/uart/uart.h"
@@ -37,7 +39,11 @@ namespace esphome
         public:
             SmartMeterD0SensorBase(std::string obis_code, std::string value_regex, int timeout_ms) :
                 obis_code_{std::move(obis_code)},
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+                value_regex_{std::move(value_regex)},
+#else
                 value_regex_{value_regex},
+#endif
                 timeout_{static_cast<uint32_t>(timeout_ms)}
             {
             }
@@ -53,7 +59,11 @@ namespace esphome
             bool has_timed_out() override;
 
         private:
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+            std::string value_regex_;
+#else
             std::regex value_regex_;
+#endif
             uint32_t lastUpdate_{0}; // in milliseconds
             const uint32_t timeout_; // in milliseconds
         };

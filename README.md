@@ -112,10 +112,33 @@ This section lists supported smart meters:
 
 ### Error Detection
 
-The OBIS D0 data format is a textual format based on ASCII characters without error detection and correction mechanisms except the parity bit. Parity errors are detected by the underlying UART layer, but in case of an error the characters are simply omitted - without further notifications to the application. This leads to corrupt readings being read which completly messes the statistics in Home Assistant. Therefore you can specify the expected format for each using regular expressions. If the received data doesn't match the regular expression (e.g. in case of parity error), the data will be discarded.
+The OBIS D0 data format is a textual format based on ASCII characters without error detection and correction mechanisms except the parity bit. Parity errors are detected by the underlying UART layer, but in case of an error the characters are simply omitted - without further notifications to the application. This leads to corrupt readings being read which completely messes the statistics in Home Assistant. Therefore you can specify the expected format for each using regular expressions. If the received data doesn't match the regular expression (e.g. in case of parity error), the data will be discarded.
 
 If anyone knows how to get a notification from the UART layer in case of an error - please let me know!
 
 ### ESP-01
 
-Due to the size of the code, this component doesn't fit into an ESP-01 / ESP-01s.
+The default implementation uses to much flash space (>512k) to be used on an ESP-01. If you want to use an ESP-01, this is possible by using a limited implementation of the regex library. You may activate it by adding `optimize_size: true` to the `obis_d0` component.
+
+```yaml
+
+obis_d0:
+  id: my_sm
+  uart_id: my_uart
+  optimize_size: true
+
+```
+
+This smaller implementation of regex comes with some caveats. They are described in the following section.
+
+#### RegEx compatibility
+
+The [tiny-regex-c library](https://github.com/kokke/tiny-regex-c/tree/master) is used to reduce the size of the resulting executable. This comes with some caveats regarding the regex capabilities.
+
+The library was somewhat extended and should include most required cases. Also error logs were added if the regex contains unsupported features.
+
+#### Unsupported RegEx Features
+- `()` any grouping mechanisms are not supported
+- `|` branching is not supported
+- Additionally the regex must match the entire value, partial matches are detected as an error. \
+  as if they are surrounded with `^` and `$`

@@ -2,6 +2,12 @@
 
 #include "SmartMeterD0.h"
 
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+    #include "re.h"
+#else
+    #include <regex>
+#endif
+
 namespace esphome
 {
     namespace obis_d0
@@ -12,6 +18,40 @@ namespace esphome
         static constexpr uint8_t STX = 0x02;
         static constexpr uint8_t ETX = 0x02;
 
+#ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
+        bool SmartMeterD0SensorBase::check_value(const std::string& value)
+        {
+            int matchlen = 0;
+            int targetlen = value.length();
+            int begin = re_match(value_regex_.c_str(), value.c_str(), &matchlen);
+
+            const char* parse_error = re_last_error();
+            if (parse_error != 0)
+            {
+                ESP_LOGE(TAG,
+                         "%s: regex '%s' failed to parse: %s",
+                         obis_code_.c_str(),
+                         value_regex_.c_str(),
+                         parse_error);
+                return false;
+            }
+
+            if (begin != 0 || matchlen != targetlen)
+            {
+                ESP_LOGW(TAG,
+                         "regex '%s' does not match entire value ('%s' -> '%s') matched %d to %d of length %d: %s",
+                         value_regex_.c_str(),
+                         obis_code_.c_str(),
+                         value.c_str(),
+                         begin,
+                         matchlen,
+                         targetlen);
+                return false;
+            }
+
+            return true;
+        }
+#else
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
         {
             bool ok = std::regex_match(value, value_regex_);
@@ -23,6 +63,7 @@ namespace esphome
 
             return ok;
         }
+#endif
 
         void SmartMeterD0SensorBase::reset_timeout_counter()
         {
