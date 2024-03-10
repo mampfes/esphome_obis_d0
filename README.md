@@ -108,7 +108,7 @@ This section lists supported smart meters:
 | [ISKRA MT174](doc/iskra_mt174.md) | Supported |
 | [Logarex LK11 / LK13](doc/logarex.md) | Supported |
 | [EasyMeter Q3D](doc/easymeter_q3.md) | Supported |
-
+| [ACE 3000 Type 260](doc/ace_3000_type_260.md) | Supported |
 
 ## Important Notes
 
