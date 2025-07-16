@@ -10,7 +10,7 @@ AUTO_LOAD = ["obis_d0"]
 SmartMeterD0TextSensor = obis_d0_ns.class_(
     "SmartMeterD0TextSensor", text_sensor.TextSensor, cg.Component)
 
-CONFIG_SCHEMA = text_sensor.TEXT_SENSOR_SCHEMA.extend(
+CONFIG_SCHEMA = text_sensor.text_sensor_schema().extend(
     {
         cv.GenerateID(): cv.declare_id(SmartMeterD0TextSensor),
         cv.GenerateID(CONF_OBIS_D0_ID): cv.use_id(SmartMeterD0),
