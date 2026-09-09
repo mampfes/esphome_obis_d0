@@ -8,8 +8,8 @@ The real SmartMeterD0.cpp and tiny-regex source are compiled against minimal
 UART/framework adapters. Tests cover long garbage streams before a telegram,
 record boundaries, oversized records, every two-chunk split of a telegram,
 malformed line endings, STX/ETX handling, and recovery to valid readings.
-The unpatched upstream source at 15a98f57fc522763f93db48ef6bdebc481b4f775
-fails the first test through the enabled std::array bounds assertion.
+Before the parser bounds fix, the long garbage-stream case fails through the
+enabled std::array bounds assertion.
 
 These tests verify parser memory bounds and resynchronization, not actual
 ESP8266 UART behavior, firmware builds, API stability, or meter compatibility.
