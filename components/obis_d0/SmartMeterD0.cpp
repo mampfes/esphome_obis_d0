@@ -16,7 +16,7 @@ namespace esphome
 
         // STX and ETX are sent by an Iskraemeco MT174 after requesting a telegram.
         static constexpr uint8_t STX = 0x02;
-        static constexpr uint8_t ETX = 0x02;
+        static constexpr uint8_t ETX = 0x03;
 
 #ifdef COMPONENT_OBIS_D0_OPTIMIZE_SIZE
         bool SmartMeterD0SensorBase::check_value(const std::string& value)
@@ -94,6 +94,7 @@ namespace esphome
 
         void SmartMeterD0::reset()
         {
+            length_ = 0;
             search_ = &SmartMeterD0::search_start_of_telegram;
         }
 
@@ -116,13 +117,17 @@ namespace esphome
 
         void SmartMeterD0::search_start_of_telegram()
         {
-            uint8_t* dest = &buffer_[length_++];
-            (void)read_byte(dest);
+            // Discard bytes until a telegram starts. Noise or a partial
+            // telegram must never fill (or overflow) the record buffer.
+            uint8_t byte;
+            if (!read_byte(&byte))
+                return;
 
             // check if this the start of a telegram
-            if (*dest == '/')
+            if (byte == '/')
             {
                 // start of telegram detected
+                buffer_[0] = byte;
                 search_ = &SmartMeterD0::search_end_of_record;
                 length_ = 1;
             }
@@ -130,6 +135,12 @@ namespace esphome
 
         void SmartMeterD0::search_end_of_record()
         {
+            if (length_ >= buffer_.size())
+            {
+                reset();
+                return;
+            }
+
             uint8_t* dest = &buffer_[length_++];
             (void)read_byte(dest);
 
